@@ -6,20 +6,36 @@ namespace UploadingStravaActivities
     {
         public static void Save(string name, string date, string time)
         {
-            name = EditFiles.ChangeName(name);
+            string path = EditFiles.ChangeName(name, date, time);
+
+            EditFiles.Txt(path);
+        }
+
+        private static void Txt(string path)
+        {
+
+        }
+
+
+        private static string ChangeName(string name, string date, string time)
+        {
+            name = EditFiles.CorrectName(name);
 
             string newName = EditFiles.DoNewName(date, time);
 
             string path = $@"C:\Users\erykh\Downloads\{name}";
             string newPath = $@"C:\Users\erykh\Downloads\{newName}";
+
             if (File.Exists(path))
             {
                 File.Copy(path, newPath);
                 File.Delete(path);
             }
+
+            return newPath;
         }
 
-        private static string ChangeName(string name)
+        private static string CorrectName(string name)
         {
             name = name.Replace(' ', '_');
             name = name.Replace('ą', '_');
@@ -50,15 +66,14 @@ namespace UploadingStravaActivities
         private static string DoNewName(string date, string time)
         {
             string tempName;
+            string[] tempDate;
 
-            tempName = date + time + ".gpx";
+            tempDate = date.Split(',');
+            time = time.Substring(time.Length - 8,5).Replace(':','.');
+
+            tempName = $"{tempDate[2].Trim()}-{tempDate[1].Trim()}-{time.Trim()}.gpx";
 
             return tempName;
-        }
-
-        public static void Txt(string name)
-        {
-
         }
     }
 }

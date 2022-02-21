@@ -72,11 +72,9 @@ namespace UploadingStravaActivities
                             string fileName = driver.FindElement(By.XPath("//*[@id='heading']//div[@class='details']/h1")).Text;
                             string fileDate = driver.FindElement(By.XPath("//*[@id='heading']//div[@class='details']/time")).Text;
 
-                            Thread.Sleep(1500);
-                            EditFiles.Save(fileName, fileTime, fileDate);
-
                             driver.Navigate().Back();
-                            Thread.Sleep(1000);
+                            EditFiles.Save(fileName, fileDate, fileTime);
+                            //Thread.Sleep(1000);
                         }
                         numberOfActivities++;
                     }
