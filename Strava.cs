@@ -1,7 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
-using System;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -63,16 +62,18 @@ namespace UploadingStravaActivities
                         map = driver.FindElements(By.XPath($"//*[@id='interval-rides']/div/div[{numberOfActivities + 1}]//*[@class='Activity--entry-media--LkXKR']"));
                         if (ride.Count == 1 && map.Count == 1)
                         {
+                            string fileTime = driver.FindElement(By.XPath($"//*[@id='interval-rides']/div/div[{numberOfActivities + 1}]//*[@class='EntryHeader--media-body--bMdyL']/div/time")).Text;
                             activity = driver.FindElement(By.XPath($"//*[@id='interval-rides']/div/div[{numberOfActivities + 1}]//h3/a"));
                             activity.Click();
 
                             driver.FindElement(By.XPath("//*[@title='Actions']")).Click();
                             driver.FindElement(By.XPath("//a[text()='Export GPX']")).Click();
 
-                            string name = driver.FindElement(By.XPath("//*[@id='heading']//div[@class='details']/h1")).Text;
+                            string fileName = driver.FindElement(By.XPath("//*[@id='heading']//div[@class='details']/h1")).Text;
+                            string fileDate = driver.FindElement(By.XPath("//*[@id='heading']//div[@class='details']/time")).Text;
 
                             Thread.Sleep(1500);
-                            EditFiles.Save(name);
+                            EditFiles.Save(fileName, fileTime, fileDate);
 
                             driver.Navigate().Back();
                             Thread.Sleep(1000);

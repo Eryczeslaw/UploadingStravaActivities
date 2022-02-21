@@ -38,8 +38,8 @@ namespace UploadingStravaActivities
         [Test]
         public void Test3()
         {
-            
-            Strava.DownloadActivitiesNewTab(driver,"https://google.com");
+
+            Strava.DownloadActivitiesNewTab(driver, "https://google.com");
         }
 
         [TearDown]

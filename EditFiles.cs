@@ -1,16 +1,14 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 namespace UploadingStravaActivities
 {
     class EditFiles
     {
-        public static void Save(string name)
+        public static void Save(string name, string date, string time)
         {
             name = EditFiles.ChangeName(name);
 
-            DateTime date = DateTime.Now;
-            string newName = date.ToString("HH:mm:ss:ff").Replace(':', '.') + ".gpx";
+            string newName = EditFiles.DoNewName(date, time);
 
             string path = $@"C:\Users\erykh\Downloads\{name}";
             string newPath = $@"C:\Users\erykh\Downloads\{newName}";
@@ -32,17 +30,30 @@ namespace UploadingStravaActivities
             name = name.Replace('ś', '_');
             name = name.Replace('ź', '_');
             name = name.Replace('ż', '_');
+            name = name.Replace(',', '_');
+            name = name.Replace('.', '_');
             name = name.Replace('!', '_');
             name = name.Replace('?', '_');
             name = name.Replace(':', '_');
             name = name.Replace(')', '_');
             name = name.Replace('(', '_');
             name = name.Replace('#', '_');
+            name = name.Replace('-', '_');
             name = name.Replace("___", "_");
+            name = name.Replace("__", "_");
             name = name.Replace("__", "_");
 
             name += ".gpx";
             return name;
+        }
+
+        private static string DoNewName(string date, string time)
+        {
+            string tempName;
+
+            tempName = date + time + ".gpx";
+
+            return tempName;
         }
 
         public static void Txt(string name)
