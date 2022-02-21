@@ -69,6 +69,11 @@ namespace UploadingStravaActivities
                             driver.FindElement(By.XPath("//*[@title='Actions']")).Click();
                             driver.FindElement(By.XPath("//a[text()='Export GPX']")).Click();
 
+                            string name = driver.FindElement(By.XPath("//*[@id='heading']//div[@class='details']/h1")).Text;
+
+                            Thread.Sleep(1500);
+                            EditFiles.Save(name);
+
                             driver.Navigate().Back();
                             Thread.Sleep(1000);
                         }
@@ -84,12 +89,9 @@ namespace UploadingStravaActivities
 
         public static void UploadActivities(IWebDriver driver)
         {
-
-            //driver.FindElement(By.XPath("//*[@id='container-nav']//a[@href='/upload']"));
             driver.FindElement(By.XPath("//*[@id='container-nav']/ul[2]/li[4]/a")).Click();
             driver.FindElement(By.XPath("//*[@id='from-file-js']/a")).Click();
             //driver.FindElement(By.XPath("//*[@id='uploadFile']//*[@class='files']")).Click();
-
         }
 
         public static void DownloadActivitiesNewTab(IWebDriver driver, string Url)
