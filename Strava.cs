@@ -3,6 +3,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
 using System.Collections.Generic;
 using System.Threading;
+using UploadingStravaActivities.FilesModification;
 
 namespace UploadingStravaActivities
 {
@@ -71,10 +72,13 @@ namespace UploadingStravaActivities
 
                             string fileName = driver.FindElement(By.XPath("//*[@id='heading']//div[@class='details']/h1")).Text;
                             string fileDate = driver.FindElement(By.XPath("//*[@id='heading']//div[@class='details']/time")).Text;
+                            string movingTime = driver.FindElement(By.XPath("//*[@id='heading']/div/div/div[2]/ul[1]/li[2]/strong")).Text;
 
                             driver.Navigate().Back();
-                            EditFiles.Save(fileName, fileDate, fileTime);
-                            //Thread.Sleep(1000);
+                            string newPath = SavingFiles.Save(fileName, fileDate, fileTime);
+                            TxtEdit.Update(newPath, fileDate, fileTime, movingTime);
+
+                            Thread.Sleep(1000);
                         }
                         numberOfActivities++;
                     }

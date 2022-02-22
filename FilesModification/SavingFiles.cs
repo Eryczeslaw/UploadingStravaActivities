@@ -1,27 +1,22 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
-namespace UploadingStravaActivities
+namespace UploadingStravaActivities.FilesModification
 {
-    class EditFiles
+    public class SavingFiles
     {
-        public static void Save(string name, string date, string time)
+        public static string Save(string name, string date, string time)
         {
-            string path = EditFiles.ChangeName(name, date, time);
+            string path = ChangeName(name, date, time);
 
-            EditFiles.Txt(path);
+            return path;
         }
-
-        private static void Txt(string path)
-        {
-
-        }
-
 
         private static string ChangeName(string name, string date, string time)
         {
-            name = EditFiles.CorrectName(name);
+            name = CorrectName(name);
 
-            string newName = EditFiles.DoNewName(date, time);
+            string newName = DoNewName(date, time);
 
             string path = $@"C:\Users\erykh\Downloads\{name}";
             string newPath = $@"C:\Users\erykh\Downloads\{newName}";
@@ -69,11 +64,31 @@ namespace UploadingStravaActivities
             string[] tempDate;
 
             tempDate = date.Split(',');
-            time = time.Substring(time.Length - 8,5).Replace(':','.');
+            time = DoNewTime(time.Substring(time.Length - 8).Trim());
 
             tempName = $"{tempDate[2].Trim()}-{tempDate[1].Trim()}-{time.Trim()}.gpx";
 
             return tempName;
+        }
+
+        private static string DoNewTime(string time)
+        {
+            string newTime;
+            string[] partsTime = time.Split(' ', ':');
+
+            if (partsTime[2] == "PM")
+            {
+                int hours = Convert.ToInt32(partsTime[0]) + 12;
+                partsTime[0] = hours.ToString();
+            }
+            else if (Convert.ToInt32(partsTime[0]) < 10)
+            {
+                partsTime[0] = "0" + partsTime[0];
+            }
+
+            newTime = $"{partsTime[0]}.{partsTime[1]}";
+
+            return newTime;
         }
     }
 }
