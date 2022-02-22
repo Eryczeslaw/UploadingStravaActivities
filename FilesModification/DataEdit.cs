@@ -23,15 +23,16 @@ namespace UploadingStravaActivities.FilesModification
         {
             string newTime;
             string[] partsTime = time.Split(' ', ':');
+            int hours = Convert.ToInt32(partsTime[0]) - 1;
 
             if (partsTime[2] == "PM")
             {
-                int hours = Convert.ToInt32(partsTime[0]) + 12;
+                hours += 12;
                 partsTime[0] = hours.ToString();
             }
-            else if (Convert.ToInt32(partsTime[0]) < 10)
+            else if (hours < 10)
             {
-                partsTime[0] = "0" + partsTime[0];
+                partsTime[0] = "0" + hours.ToString();
             }
 
             newTime = $"{partsTime[0]}:{partsTime[1]}:00Z";

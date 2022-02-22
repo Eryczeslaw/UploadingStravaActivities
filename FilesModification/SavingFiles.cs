@@ -23,7 +23,7 @@ namespace UploadingStravaActivities.FilesModification
 
             if (File.Exists(path))
             {
-                File.Copy(path, newPath);
+                File.Copy(path, newPath, true);
                 File.Delete(path);
             }
 

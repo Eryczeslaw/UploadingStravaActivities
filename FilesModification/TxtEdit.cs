@@ -30,7 +30,7 @@ namespace UploadingStravaActivities.FilesModification
 
             int interval = (int)Math.Round(secondsTime / measurements, MidpointRounding.ToPositiveInfinity);
 
-            for (int i = 0; i < text.Length; i++)
+            for (int i = 0; i < text.Length - 1; i++)
             {
                 stringBuilder.AppendLine(text[i]);
                 if (i == 1)

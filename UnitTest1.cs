@@ -22,24 +22,26 @@ namespace UploadingStravaActivities
         [Test]
         public void Test1()
         {
-            Strava.LogIn(driver, "fejk@buziaczek.pl", "!Fejk123");
-            //Strava.DownloadActivities(driver, "https://www.strava.com/athletes/22887934");
-            Strava.DownloadActivities(driver, "https://www.strava.com/athletes/85532528");
-            //Strava.DownloadActivities(driver, "https://www.strava.com/athletes/94496430");
+            Strava strava = new Strava(driver);
+            strava.LogIn("fejk@buziaczek.pl", "!Fejk123");
+            //strava.DownloadActivities("https://www.strava.com/athletes/22887934");
+            strava.DownloadActivities("https://www.strava.com/athletes/85532528");
+            //strava.DownloadActivities("https://www.strava.com/athletes/94496430");
         }
 
         [Test]
         public void Test2()
         {
-            Strava.LogIn(driver, "fejk@buziaczek.pl", "!Fejk123");
-            Strava.UploadActivities(driver);
+            Strava strava = new Strava(driver);
+            strava.LogIn("fejk@buziaczek.pl", "!Fejk123");
+            strava.UploadActivities();
         }
 
         [Test]
         public void Test3()
         {
-
-            Strava.DownloadActivitiesNewTab(driver, "https://google.com");
+            Strava strava = new Strava(driver);
+            strava.DownloadActivitiesNewTab("https://google.com");
         }
 
         [TearDown]

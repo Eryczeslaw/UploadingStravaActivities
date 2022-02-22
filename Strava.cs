@@ -1,6 +1,8 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Support.UI;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using UploadingStravaActivities.FilesModification;
@@ -9,7 +11,16 @@ namespace UploadingStravaActivities
 {
     public class Strava
     {
-        public static void LogIn(IWebDriver driver, string emailEntry, string passwordEntry)
+        private IWebDriver driver;
+        private WebDriverWait wait;
+
+        public Strava(IWebDriver _driver)
+        {
+            driver = _driver;
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+        }
+
+        public void LogIn(string emailEntry, string passwordEntry)
         {
             driver.Navigate().GoToUrl("http://strava.com/login");
 
@@ -22,7 +33,7 @@ namespace UploadingStravaActivities
             driver.FindElement(By.CssSelector("[id='login-button']")).Click();
         }
 
-        public static void DownloadActivities(IWebDriver driver, string Url)
+        public void DownloadActivities(string Url)
         {
             driver.Navigate().GoToUrl(Url);
 
@@ -78,7 +89,8 @@ namespace UploadingStravaActivities
                             string newPath = SavingFiles.Save(fileName, fileDate, fileTime);
                             TxtEdit.Update(newPath, fileDate, fileTime, movingTime);
 
-                            Thread.Sleep(1000);
+                            //wait.Until(d => d.FindElement(By.XPath($"//*[@id='interval-rides']/div/div[{numberOfActivities + 1}]//*[@class='EntryHeader--media-body--bMdyL']/div/time[text() ='{fileTime}']")).Displayed);
+                            Thread.Sleep(1500);
                         }
                         numberOfActivities++;
                     }
@@ -90,16 +102,16 @@ namespace UploadingStravaActivities
             } while (numberOfYears != listOfYears.Count);
         }
 
-        public static void UploadActivities(IWebDriver driver)
+        public void UploadActivities()
         {
             driver.FindElement(By.XPath("//*[@id='container-nav']/ul[2]/li[4]/a")).Click();
             driver.FindElement(By.XPath("//*[@id='from-file-js']/a")).Click();
             //driver.FindElement(By.XPath("//*[@id='uploadFile']//*[@class='files']")).Click();
         }
 
-        public static void DownloadActivitiesNewTab(IWebDriver driver, string Url)
+        public void DownloadActivitiesNewTab(string Url)
         {
-            Strava.LogIn(driver, "fejk@buziaczek.pl", "!Fejk123");
+            LogIn("fejk@buziaczek.pl", "!Fejk123");
             IWebDriver newTab = new ChromeDriver();
             newTab = driver.SwitchTo().NewWindow(WindowType.Tab);
             driver.Navigate().GoToUrl("http://strava.com/login");
@@ -114,7 +126,6 @@ namespace UploadingStravaActivities
             Actions action = new Actions(driver);
             action.KeyDown(Keys.Control).MoveToElement(body).Click().Perform();
             //action.KeyDown(Keys.Control + "t").Click().Perform();
-
         }
     }
 }
