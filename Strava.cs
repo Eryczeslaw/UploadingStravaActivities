@@ -1,9 +1,8 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using UploadingStravaActivities.FilesModification;
 
@@ -112,20 +111,14 @@ namespace UploadingStravaActivities
         public void DownloadActivitiesNewTab(string Url)
         {
             LogIn("fejk@buziaczek.pl", "!Fejk123");
-            IWebDriver newTab = new ChromeDriver();
-            newTab = driver.SwitchTo().NewWindow(WindowType.Tab);
-            driver.Navigate().GoToUrl("http://strava.com/login");
-            newTab.Navigate().GoToUrl("http://strava.com/login");
-            newTab.Close();
 
+            ((IJavaScriptExecutor)driver).ExecuteScript("window.open();");
 
-            IWebElement body = driver.FindElement(By.TagName("body"));
-            // body.SendKeys(Keys.Control + "t");
-            //Thread.Sleep(5000);
-            //body.SendKeys(Keys.Control + "w");
-            Actions action = new Actions(driver);
-            action.KeyDown(Keys.Control).MoveToElement(body).Click().Perform();
-            //action.KeyDown(Keys.Control + "t").Click().Perform();
+            driver.SwitchTo().Window(driver.WindowHandles.Last());
+            driver.Navigate().GoToUrl("https://www.strava.com/activities/6716663610");
+
+            driver.SwitchTo().Window(driver.WindowHandles.First());
+            driver.SwitchTo().Window(driver.WindowHandles.Last());
         }
     }
 }
