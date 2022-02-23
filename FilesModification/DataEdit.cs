@@ -129,6 +129,7 @@ namespace UploadingStravaActivities.FilesModification
             int seconds = Convert.ToInt32(partsDate[5]);
             int minutes = Convert.ToInt32(partsDate[4]);
             int hours = Convert.ToInt32(partsDate[3]);
+            int days = Convert.ToInt32(partsDate[2]);
             seconds += interval;
             if (seconds > 59)
             {
@@ -139,6 +140,11 @@ namespace UploadingStravaActivities.FilesModification
                     minutes -= 60;
                     hours++;
                 }
+                if (hours > 23)
+                {
+                    hours -= 24;
+                    days++;
+                }    
             }
 
             if (seconds < 10)
@@ -157,7 +163,22 @@ namespace UploadingStravaActivities.FilesModification
             {
                 partsDate[4] = minutes.ToString();
             }
-            partsDate[3] = hours.ToString();
+            if (hours < 10)
+            {
+                partsDate[3] = "0" + hours.ToString();
+            }
+            else
+            {
+                partsDate[3] = hours.ToString();
+            }
+            if (days < 10)
+            {
+                partsDate[2] = "0" + days.ToString();
+            }
+            else
+            {
+                partsDate[2] = days.ToString();
+            }
 
             sampleTime = $"{partsDate[0]}-{partsDate[1]}-{partsDate[2]}T{partsDate[3]}:{partsDate[4]}:{partsDate[5]}Z";
 

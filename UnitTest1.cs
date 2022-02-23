@@ -15,7 +15,6 @@ namespace UploadingStravaActivities
             driver.Manage().Window.Position = new System.Drawing.Point(30, 30);
             driver.Manage().Window.Size = new System.Drawing.Size(1800, 1000);
 
-            //driver.Manage().Timeouts().ImplicitWait = System.TimeSpan.FromSeconds(5);
             driver.Manage().Timeouts().PageLoad = System.TimeSpan.FromSeconds(10);
         }
 
@@ -41,7 +40,8 @@ namespace UploadingStravaActivities
         public void Test3()
         {
             Strava strava = new Strava(driver);
-            strava.DownloadActivitiesNewTab("https://google.com");
+            strava.LogIn("fejk@buziaczek.pl", "!Fejk123");
+            strava.DownloadActivitiesNewTab("https://www.strava.com/athletes/85532528");
         }
 
         [TearDown]
