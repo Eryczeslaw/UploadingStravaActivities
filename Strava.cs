@@ -2,7 +2,9 @@
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using UploadingStravaActivities.FilesModification;
 
@@ -104,9 +106,28 @@ namespace UploadingStravaActivities
 
         public void UploadActivities()
         {
-            driver.FindElement(By.XPath("//*[@id='container-nav']/ul[2]/li[4]/a")).Click();
-            driver.FindElement(By.XPath("//*[@id='from-file-js']/a")).Click();
-            //driver.FindElement(By.XPath("//*[@id='uploadFile']//*[@class='files']")).Click();
+            WebClient webClient = new WebClient();
+            IEnumerable<string> files = Directory.EnumerateFiles(@"C:\Users\erykh\Downloads", "*.gpx");
+
+            foreach (string file in files)
+            {
+                driver.FindElement(By.XPath("//*[@id='container-nav']/ul[2]/li[4]/a")).Click();
+                driver.FindElement(By.XPath("//*[@id='from-file-js']/a")).Click();
+                driver.FindElement(By.XPath("//*[@id='uploadFile']/form/input[3]")).SendKeys(file);
+                Thread.Sleep(5000);
+                IReadOnlyCollection<IWebElement> errorsFalse = driver.FindElements(By.XPath("//*[@id='uploadProgress']//*[@class='error']"));
+                if(errorsFalse.Count == 0)
+                {
+                    Thread.Sleep(10000);
+                    string activityTitle = DataEdit.Title(file);
+                    driver.FindElement(By.XPath("//*[@id='uploadProgress']//*[@name = 'name']")).Clear();
+                    driver.FindElement(By.XPath("//*[@id='uploadProgress']//*[@name = 'name']")).SendKeys(activityTitle);
+                    driver.FindElement(By.XPath("//*[@id='uploadProgress']//*[@class='selection']")).Click();
+                    driver.FindElement(By.XPath("//*[@id='uploadProgress']//*[@data-value = 'Ride']")).Click();
+                    driver.FindElement(By.XPath("//*[@id='uploadFooter']/button[1]")).Click();
+                    Thread.Sleep(14000);
+                }
+            }
         }
 
         public void DownloadActivitiesNewTab(string Url)
@@ -130,7 +151,7 @@ namespace UploadingStravaActivities
                     listOfYears[numberOfYears].Click();
                 }
                 Thread.Sleep(1000);
-                
+
                 int numberOfWeeks = 0;
                 do
                 {
