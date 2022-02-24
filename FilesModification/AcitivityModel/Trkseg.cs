@@ -1,9 +1,12 @@
-﻿namespace UploadingStravaActivities.FilesModification.AcitivityModel
+﻿using System.Collections.Generic;
+using System.Xml.Serialization;
+
+namespace UploadingStravaActivities.FilesModification.AcitivityModel
 {
+    [XmlRoot(ElementName = "trkseg", Namespace = "http://www.topografix.com/GPX/1/1")]
     public class Trkseg
     {
-        public Trkpt Trkpt { get; set; }
-        public double Ele { set; get; }
-        public string Time { set; get; }
+        [XmlElement("trkpt")]
+        public List<Trkpt> Trkpt { get; set; }
     }
 }

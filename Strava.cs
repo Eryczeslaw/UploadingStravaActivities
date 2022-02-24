@@ -14,12 +14,12 @@ namespace UploadingStravaActivities
     {
         private IWebDriver driver;
         private WebDriverWait wait;
-        private double minumKM = 0;
+        private double minumKM = 15;
 
         public Strava(IWebDriver _driver)
         {
             driver = _driver;
-            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
         }
 
         public void LogIn(string emailEntry, string passwordEntry)
@@ -90,7 +90,7 @@ namespace UploadingStravaActivities
                                 string newPath = SavingFiles.Save(fileName, fileDate, fileTime);
                                 TxtEdit.Update(newPath, fileDate, fileTime, movingTime);
 
-                                //wait.Until(d => driver.FindElement(By.XPath($"//*[@id='interval-rides']/div/div[{numberOfActivities + 1}]//*[@class='EntryHeader--media-body--bMdyL']/div/time[text() ='{fileTime}']")).Enabled);
+                                //wait.Until(d => d.FindElement(By.XPath($"//*[@id='interval-rides']//*[@class='EntryHeader--media-body--bMdyL']/div/time[text() ='{fileTime}']")));
                                 Thread.Sleep(1500);
                             }
                         }
@@ -109,6 +109,7 @@ namespace UploadingStravaActivities
             WebClient webClient = new WebClient();
             IEnumerable<string> files = Directory.EnumerateFiles(@"C:\Users\erykh\Downloads", "*.gpx");
 
+
             foreach (string file in files)
             {
                 driver.FindElement(By.XPath("//*[@id='container-nav']/ul[2]/li[4]/a")).Click();
@@ -116,16 +117,19 @@ namespace UploadingStravaActivities
                 driver.FindElement(By.XPath("//*[@id='uploadFile']/form/input[3]")).SendKeys(file);
                 Thread.Sleep(5000);
                 IReadOnlyCollection<IWebElement> errorsFalse = driver.FindElements(By.XPath("//*[@id='uploadProgress']//*[@class='error']"));
-                if(errorsFalse.Count == 0)
+                if (errorsFalse.Count == 0)
                 {
                     Thread.Sleep(10000);
+                    //wait.Until(d => d.FindElement(By.XPath("//*[@id='uploadProgress']//div[@class='map-activity-container map']/img[@src]")));
                     string activityTitle = DataEdit.Title(file);
                     driver.FindElement(By.XPath("//*[@id='uploadProgress']//*[@name = 'name']")).Clear();
                     driver.FindElement(By.XPath("//*[@id='uploadProgress']//*[@name = 'name']")).SendKeys(activityTitle);
                     driver.FindElement(By.XPath("//*[@id='uploadProgress']//*[@class='selection']")).Click();
                     driver.FindElement(By.XPath("//*[@id='uploadProgress']//*[@data-value = 'Ride']")).Click();
                     driver.FindElement(By.XPath("//*[@id='uploadFooter']/button[1]")).Click();
-                    Thread.Sleep(14000);
+
+                    //wait.Until(d => d.FindElement(By.XPath("/html/body[@class='logged-in  clean offset feed3p0 old-login']")));
+                    Thread.Sleep(10000);
                 }
             }
         }

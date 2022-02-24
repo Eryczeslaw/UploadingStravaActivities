@@ -2,19 +2,19 @@
 
 namespace UploadingStravaActivities.FilesModification.AcitivityModel
 {
+    [XmlRoot(ElementName = "gpx", Namespace = "http://www.topografix.com/GPX/1/1")]
     public class Gpx
     {
-        [XmlAttribute]
+        [XmlAttribute("creator")]
         public string Creator { get; set; }
-        
-        [XmlAttribute]
-        public string Version { get; set; }
-        
-        [XmlAttribute]
-        public string Xmlns { get; set; }
 
+        [XmlAttribute("version")]
+        public string Version { get; set; }
+
+        [XmlElement("metadata")]
         public Metadata Metadata { get; set; }
-        
-        public Trk trk { get; set; }
+
+        [XmlElement("trk")]
+        public Trk Trk { get; set; }
     }
 }

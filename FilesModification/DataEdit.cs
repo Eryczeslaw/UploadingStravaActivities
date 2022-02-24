@@ -210,7 +210,7 @@ namespace UploadingStravaActivities.FilesModification
             string title;
             string[] partsFileName = file.Split("\\");
             title = partsFileName[partsFileName.Length - 1].Substring(0, partsFileName[partsFileName.Length - 1].Length - 4);
-            
+
             return title;
         }
     }
