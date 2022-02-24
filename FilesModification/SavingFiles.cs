@@ -78,8 +78,11 @@ namespace UploadingStravaActivities.FilesModification
 
             if (partsTime[2] == "PM")
             {
-                int hours = Convert.ToInt32(partsTime[0]) + 12;
-                partsTime[0] = hours.ToString();
+                if (partsTime[0] != "12")
+                {
+                    int hours = Convert.ToInt32(partsTime[0]) + 12;
+                    partsTime[0] = hours.ToString();
+                }
             }
             else if (Convert.ToInt32(partsTime[0]) < 10)
             {

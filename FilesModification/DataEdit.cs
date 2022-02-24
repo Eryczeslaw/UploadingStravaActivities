@@ -27,12 +27,19 @@ namespace UploadingStravaActivities.FilesModification
 
             if (partsTime[2] == "PM")
             {
-                hours += 12;
-                partsTime[0] = hours.ToString();
+                if (hours != 10)
+                {
+                    hours += 12;
+                    partsTime[0] = hours.ToString();
+                }
             }
             else if (hours < 10)
             {
                 partsTime[0] = "0" + hours.ToString();
+            }
+            else
+            {
+                hours += 12;
             }
 
             newTime = $"{partsTime[0]}:{partsTime[1]}:00Z";
@@ -144,7 +151,7 @@ namespace UploadingStravaActivities.FilesModification
                 {
                     hours -= 24;
                     days++;
-                }    
+                }
             }
 
             if (seconds < 10)
