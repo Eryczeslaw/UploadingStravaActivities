@@ -15,14 +15,14 @@ namespace UploadingStravaActivities
             driver.Manage().Window.Position = new System.Drawing.Point(30, 30);
             driver.Manage().Window.Size = new System.Drawing.Size(1800, 1000);
 
-            driver.Manage().Timeouts().PageLoad = System.TimeSpan.FromSeconds(10);
+            driver.Manage().Timeouts().PageLoad = System.TimeSpan.FromSeconds(15);
         }
 
         [Test]
         public void Test1()
         {
             Strava strava = new Strava(driver);
-            strava.LogIn("fejk@buziaczek.pl", "!Fejk123");
+            strava.LogIn("*****", "*****");
             //strava.DownloadActivities("https://www.strava.com/athletes/22887934");
             strava.DownloadActivities("https://www.strava.com/athletes/85532528");
             //strava.DownloadActivities("https://www.strava.com/athletes/94496430");
@@ -32,7 +32,7 @@ namespace UploadingStravaActivities
         public void Test2()
         {
             Strava strava = new Strava(driver);
-            strava.LogIn("fejk@buziaczek.pl", "!Fejk123");
+            strava.LogIn("*****", "*****");
             strava.UploadActivities();
         }
 
@@ -40,7 +40,7 @@ namespace UploadingStravaActivities
         public void Test3()
         {
             Strava strava = new Strava(driver);
-            strava.LogIn("fejk@buziaczek.pl", "!Fejk123");
+            strava.LogIn("*****", "*****");
             strava.DownloadActivitiesNewTab("https://www.strava.com/athletes/85532528");
         }
 

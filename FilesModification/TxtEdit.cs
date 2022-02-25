@@ -28,7 +28,7 @@ namespace UploadingStravaActivities.FilesModification
             int lines = text.Length;
             double measurements = (lines - 9) / 3;
 
-            double interval = Math.Round(secondsTime / measurements, MidpointRounding.ToPositiveInfinity);
+            double interval = Math.Round(secondsTime / measurements);
 
             for (int i = 0; i < text.Length - 1; i++)
             {
