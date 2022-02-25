@@ -55,12 +55,12 @@ namespace UploadingStravaActivities
                         listOfYears = driver.FindElements(By.XPath("//*[@id='interval-date-range']//li"));
                         driver.FindElement(By.XPath("//*[@id='interval-date-range']")).Click();
                         listOfYears[numberOfYears].Click();
+                        Thread.Sleep(1500);
                     }
-
-                    Thread.Sleep(1000);
+                    
                     listOfWeeks = driver.FindElements(By.XPath("//div[@id='interval-graph-columns']//a"));
                     listOfWeeks[listOfWeeks.Count - numberOfWeeks - 1].Click();
-                    Thread.Sleep(1000);
+                    Thread.Sleep(1500);
 
                     IReadOnlyList<IWebElement> activities = driver.FindElements(By.XPath("//*[@id='interval-rides']/div/div"));
 
@@ -86,11 +86,13 @@ namespace UploadingStravaActivities
                                 string fileDate = driver.FindElement(By.XPath("//*[@id='heading']//div[@class='details']/time")).Text;
                                 string movingTime = driver.FindElement(By.XPath("//*[@id='heading']/div/div/div[2]/ul[1]/li[2]/strong")).Text;
 
-                                driver.Navigate().Back();
+                                Thread.Sleep(1000);
                                 string newPath = SavingFiles.Save(fileName, fileDate, fileTime);
                                 TxtEdit.Update(newPath, fileDate, fileTime, movingTime);
+                                //GpxEdit.Update(newPath, fileDate, fileTime, movingTime);
 
-                                //wait.Until(d => d.FindElement(By.XPath($"//*[@id='interval-rides']//*[@class='EntryHeader--media-body--bMdyL']/div/time[text() ='{fileTime}']")));
+                                driver.Navigate().Back();
+                                //wait.Until(d => driver.FindElement(By.XPath($"//*[@id='interval-rides']//*[@class='EntryHeader--media-body--bMdyL']/div/time[text() ='{fileTime}']")));
                                 Thread.Sleep(1500);
                             }
                         }

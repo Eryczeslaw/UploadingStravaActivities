@@ -4,192 +4,99 @@ namespace UploadingStravaActivities.FilesModification
 {
     public class DataEdit
     {
-        public static string ChangeDate(string date, string time)
+        public static DateTime ConvertDate(string date, string time)
         {
-            string tempDate;
-
             string[] partsDate = date.Replace(", ", ",").Split(',', ' ');
-
-            time = ConvertTime(time.Substring(time.Length - 8).Trim());
-
-            string newDate = ConvertDate(partsDate);
-
-            tempDate = $"{newDate}{time}";
-
-            return tempDate;
-        }
-
-        private static string ConvertTime(string time)
-        {
-            string newTime;
             string[] partsTime = time.Split(' ', ':');
-            int hours = Convert.ToInt32(partsTime[0]) - 1;
 
-            if (partsTime[2] == "PM")
+            int year = Convert.ToInt32(partsDate[3]);
+            int month = ConvertMonth(partsDate);
+            int day = Convert.ToInt32(partsDate[2]);
+            int hour = Convert.ToInt32(partsTime[4]) - 1;
+            int minute = Convert.ToInt32(partsTime[5]);
+
+            if (partsTime[6] == "PM" && hour < 11)
             {
-                if (hours != 10)
-                {
-                    hours += 12;
-                    partsTime[0] = hours.ToString();
-                }
+                hour += 12;
             }
-            else if (hours < 10)
+            if (partsTime[6] == "AM" && hour == 11)
             {
-                partsTime[0] = "0" + hours.ToString();
-            }
-            else
-            {
-                hours += 12;
+                hour = 0;
             }
 
-            newTime = $"{partsTime[0]}:{partsTime[1]}:00Z";
+            DateTime dateTime = new DateTime(year, month, day, hour, minute, 0, DateTimeKind.Utc);
 
-            return newTime;
+            return dateTime;
         }
 
-
-        private static string ConvertDate(string[] date)
+        private static int ConvertMonth(string[] date)
         {
-            string newDate;
+            int month = 0;
             switch (date[1])
             {
                 case "January":
                     {
-                        date[1] = "01";
+                        month = 1;
                     }
                     break;
                 case "February":
                     {
-                        date[1] = "02";
+                        month = 2;
                     }
                     break;
                 case "March":
                     {
-                        date[1] = "03";
+                        month = 3;
                     }
                     break;
                 case "April":
                     {
-                        date[1] = "04";
+                        month = 4;
                     }
                     break;
                 case "May":
                     {
-                        date[1] = "05";
+                        month = 5;
                     }
                     break;
                 case "June":
                     {
-                        date[1] = "06";
+                        month = 6;
                     }
                     break;
                 case "July":
                     {
-                        date[1] = "07";
+                        month = 7;
                     }
                     break;
                 case "August":
                     {
-                        date[1] = "08";
+                        month = 8;
                     }
                     break;
                 case "September":
                     {
-                        date[1] = "09";
+                        month = 9;
                     }
                     break;
                 case "October":
                     {
-                        date[1] = "10";
+                        month = 10;
                     }
                     break;
                 case "November":
                     {
-                        date[1] = "11";
+                        month = 11;
                     }
                     break;
                 case "December":
                     {
-                        date[1] = "12";
+                        month = 12;
                     }
                     break;
             }
-            if (Convert.ToInt32(date[2]) < 10)
-            {
-                date[2] = "0" + date[2];
-            }
 
-            newDate = $"{date[3]}-{date[1]}-{date[2]}T";
-
-            return newDate;
-        }
-
-        public static string CaculateTime(string date, int interval)
-        {
-            string sampleTime;
-            interval = interval % 60;
-
-            date = date.Replace('T', ' ').Replace('Z', ' ').Trim();
-
-            string[] partsDate = date.Split(' ', '-', ':');
-
-            int seconds = Convert.ToInt32(partsDate[5]);
-            int minutes = Convert.ToInt32(partsDate[4]);
-            int hours = Convert.ToInt32(partsDate[3]);
-            int days = Convert.ToInt32(partsDate[2]);
-            seconds += interval;
-            if (seconds > 59)
-            {
-                seconds -= 60;
-                minutes++;
-                if (minutes > 59)
-                {
-                    minutes -= 60;
-                    hours++;
-                }
-                if (hours > 23)
-                {
-                    hours -= 24;
-                    days++;
-                }
-            }
-
-            if (seconds < 10)
-            {
-                partsDate[5] = "0" + seconds.ToString();
-            }
-            else
-            {
-                partsDate[5] = seconds.ToString();
-            }
-            if (minutes < 10)
-            {
-                partsDate[4] = "0" + minutes.ToString();
-            }
-            else
-            {
-                partsDate[4] = minutes.ToString();
-            }
-            if (hours < 10)
-            {
-                partsDate[3] = "0" + hours.ToString();
-            }
-            else
-            {
-                partsDate[3] = hours.ToString();
-            }
-            if (days < 10)
-            {
-                partsDate[2] = "0" + days.ToString();
-            }
-            else
-            {
-                partsDate[2] = days.ToString();
-            }
-
-            sampleTime = $"{partsDate[0]}-{partsDate[1]}-{partsDate[2]}T{partsDate[3]}:{partsDate[4]}:{partsDate[5]}Z";
-
-            return sampleTime;
+            return month;
         }
 
         public static int CalculateSeconds(string movingTime)
