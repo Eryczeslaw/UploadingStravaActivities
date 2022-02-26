@@ -13,30 +13,49 @@ namespace UploadingStravaActivities
             driver = _driver;
         }
 
-        public void WaitUntilElementLoad(string xPath, int time)
+        public void WaitUntilElementDisappear(string xPath, int seconds)
         {
-            for (int i = 0; i < time * 20; i++)
+            for (int j = 0; j < seconds * 20; j++)
             {
-                Thread.Sleep(50);
                 try
                 {
                     driver.FindElement(By.XPath(xPath));
+                }
+                catch (NoSuchElementException)
+                {
                     return;
                 }
-                catch(NoSuchElementException)
-                {
 
-                }
+                Thread.Sleep(50);
             }
 
             throw new TimeoutException();
         }
 
-        public bool WaitUntilOneOfThemLoad(string xPathFirst, string xPathSecond, int time)
+        public void WaitUntilElementLoad(string xPath, int seconds)
         {
-            for (int i = 0; i < time * 20; i++)
+            for (int i = 0; i < seconds * 20; i++)
             {
+                try
+                {
+                    driver.FindElement(By.XPath(xPath));
+                    return;
+                }
+                catch (NoSuchElementException)
+                {
+
+                }
+
                 Thread.Sleep(50);
+            }
+
+            throw new TimeoutException();
+        }
+
+        public bool WaitUntilOneOfThemLoad(string xPathFirst, string xPathSecond, int seconds)
+        {
+            for (int i = 0; i < seconds * 20; i++)
+            {
                 try
                 {
                     driver.FindElement(By.XPath(xPathFirst));
@@ -44,7 +63,7 @@ namespace UploadingStravaActivities
                 }
                 catch (NoSuchElementException)
                 {
-                    
+
                 }
 
                 try
@@ -56,6 +75,8 @@ namespace UploadingStravaActivities
                 {
 
                 }
+
+                Thread.Sleep(50);
             }
 
             throw new TimeoutException();

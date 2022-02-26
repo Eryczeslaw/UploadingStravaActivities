@@ -102,7 +102,7 @@ namespace UploadingStravaActivities
                 } while (numberOfWeeks < listOfWeeks.Count);
 
                 numberOfYears++;
-            } while (numberOfYears != 2);
+            } while (numberOfYears != listOfYears.Count);
         }
 
         public void UploadActivities()
@@ -125,7 +125,8 @@ namespace UploadingStravaActivities
                     driver.FindElement(By.XPath("//*[@id='uploadProgress']//*[@class='selection']")).Click();
                     driver.FindElement(By.XPath("//*[@id='uploadProgress']//*[@data-value = 'Ride']")).Click();
                     driver.FindElement(By.XPath("//*[@id='uploadFooter']/button[1]")).Click();
-                    Thread.Sleep(10000);
+                    wait.WaitUntilElementLoad("//*//*[@id='heading']", 15);
+                    wait.WaitUntilElementDisappear("//*[@class='lightbox edit_activity']", 15);
                 }
             }
         }
@@ -197,7 +198,7 @@ namespace UploadingStravaActivities
                     numberOfWeeks++;
                 } while (numberOfWeeks < listOfWeeks.Count);
                 numberOfYears++;
-            } while (numberOfYears != 2);
+            } while (numberOfYears != listOfYears.Count);
         }
     }
 }
