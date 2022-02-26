@@ -70,7 +70,7 @@ namespace UploadingStravaActivities
 
                         IReadOnlyList<IWebElement> ride = driver.FindElements(By.XPath($"//*[@id='interval-rides']/div/div[{numberOfActivities + 1}]//*[@title='Ride']"));
                         IReadOnlyList<IWebElement> map = driver.FindElements(By.XPath($"//*[@id='interval-rides']/div/div[{numberOfActivities + 1}]//*[@class='Activity--entry-media--LkXKR']"));
-                        if (ride.Count == 1 && map.Count == 1)
+                        if (ride.Count == 1 && map.Count > 0)
                         {
                             string distance = driver.FindElement(By.XPath($"//*[@id='interval-rides']/div/div[{numberOfActivities + 1}]//div[@class='Stat--stat-value--g-Ge3 '][text()]")).Text;
                             double activityKM = Convert.ToDouble(distance.Substring(0, distance.Length - 3).Replace('.', ','));
@@ -102,7 +102,7 @@ namespace UploadingStravaActivities
                 } while (numberOfWeeks < listOfWeeks.Count);
 
                 numberOfYears++;
-            } while (numberOfYears != listOfYears.Count);
+            } while (numberOfYears != 2);
         }
 
         public void UploadActivities()
@@ -197,7 +197,7 @@ namespace UploadingStravaActivities
                     numberOfWeeks++;
                 } while (numberOfWeeks < listOfWeeks.Count);
                 numberOfYears++;
-            } while (numberOfYears != listOfYears.Count);
+            } while (numberOfYears != 2);
         }
     }
 }

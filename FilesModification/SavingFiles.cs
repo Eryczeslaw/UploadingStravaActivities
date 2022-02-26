@@ -36,6 +36,7 @@ namespace UploadingStravaActivities.FilesModification
             name = name.Replace('ć', '_');
             name = name.Replace('ę', '_');
             name = name.Replace('ł', '_');
+            name = name.Replace('ń', '_');
             name = name.Replace('ó', '_');
             name = name.Replace('ś', '_');
             name = name.Replace('ź', '_');
@@ -45,6 +46,7 @@ namespace UploadingStravaActivities.FilesModification
             name = name.Replace('!', '_');
             name = name.Replace('?', '_');
             name = name.Replace(':', '_');
+            name = name.Replace(';', '_');
             name = name.Replace(')', '_');
             name = name.Replace('(', '_');
             name = name.Replace('#', '_');

@@ -29,7 +29,8 @@ namespace UploadingStravaActivities
             //AthletePage athlete = new AthletePage(driver, "85532528");
             //athlete.Navigate();
             Strava strava = new Strava(driver);
-            strava.DownloadActivities("85532528");
+           // strava.DownloadActivities("85532528");
+            strava.DownloadActivities("22887934");
         }
 
         [Test]
