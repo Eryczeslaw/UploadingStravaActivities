@@ -24,24 +24,11 @@ namespace UploadingStravaActivities
             wait = new WaitHelper(driver);
         }
 
-        public void LogIn(string emailEntry, string passwordEntry)
+        public void DownloadActivities(string athleteNumber)
         {
-            driver.Navigate().GoToUrl("http://strava.com/login");
+            driver.Navigate().GoToUrl("https://www.strava.com/athletes/" + athleteNumber);
 
-            IWebElement emailField = driver.FindElement(By.CssSelector("[name='email']"));
-            emailField.SendKeys(emailEntry);
-
-            IWebElement passwordField = driver.FindElement(By.CssSelector("[name='password']"));
-            passwordField.SendKeys(passwordEntry);
-
-            driver.FindElement(By.CssSelector("[id='login-button']")).Click();
-        }
-
-        public void DownloadActivities(string Url)
-        {
-            driver.Navigate().GoToUrl(Url);
-
-            IReadOnlyList<IWebElement> listOfYears = driver.FindElements(By.XPath("//*[@id='interval-date-range']//li"));
+            IReadOnlyList <IWebElement> listOfYears = driver.FindElements(By.XPath("//*[@id='interval-date-range']//li"));
             IReadOnlyList<IWebElement> listOfWeeks;
             string firstYear = driver.FindElement(By.XPath("//*[@id='interval-date-range']")).Text;
 
@@ -73,7 +60,7 @@ namespace UploadingStravaActivities
                         {
                             webWait.Until(d => driver.FindElement(By.Id("interval-value")).Text == week);
                         }
-                        catch (TimeoutException e)
+                        catch (TimeoutException)
                         {
                             listOfWeeks = driver.FindElements(By.XPath("//div[@id='interval-graph-columns']//a"));
                             listOfWeeks[listOfWeeks.Count - numberOfWeeks - 1].Click();
