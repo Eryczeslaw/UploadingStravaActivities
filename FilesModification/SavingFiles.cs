@@ -5,29 +5,28 @@ namespace UploadingStravaActivities.FilesModification
 {
     public class SavingFiles
     {
-        public static string Save(string name, string date, string time)
+        public static string Save(string directoryDownloadPath, string name, string date, string time)
         {
-            string path = ChangeName(name, date, time);
+            string path = ChangeName(directoryDownloadPath, name, date, time);
 
             return path;
         }
 
-        private static string ChangeName(string name, string date, string time)
+        private static string ChangeName(string directoryDownloadPath, string name, string date, string time)
         {
             name = CorrectName(name);
 
             string newName = DoNewName(date, time);
+            string filePath = directoryDownloadPath + name;
+            string fileNewPath = directoryDownloadPath + newName;
 
-            string path = $@"C:\Users\erykh\Downloads\{name}";
-            string newPath = $@"C:\Users\erykh\Downloads\{newName}";
-
-            if (File.Exists(path))
+            if (File.Exists(filePath))
             {
-                File.Copy(path, newPath, true);
-                File.Delete(path);
+                File.Copy(filePath, fileNewPath, true);
+                File.Delete(filePath);
             }
 
-            return newPath;
+            return fileNewPath;
         }
 
         private static string CorrectName(string name)

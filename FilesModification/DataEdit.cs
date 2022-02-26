@@ -7,19 +7,20 @@ namespace UploadingStravaActivities.FilesModification
         public static DateTime ConvertDate(string date, string time)
         {
             string[] partsDate = date.Replace(", ", ",").Split(',', ' ');
-            string[] partsTime = time.Split(' ', ':');
+            string[] partsTime = time.Substring(time.Length - 8).Trim().Split(' ', ':');
+
 
             int year = Convert.ToInt32(partsDate[3]);
             int month = ConvertMonth(partsDate);
             int day = Convert.ToInt32(partsDate[2]);
-            int hour = Convert.ToInt32(partsTime[4]) - 1;
-            int minute = Convert.ToInt32(partsTime[5]);
+            int hour = Convert.ToInt32(partsTime[0]) - 1;
+            int minute = Convert.ToInt32(partsTime[1]);
 
-            if (partsTime[6] == "PM" && hour < 11)
+            if (partsTime[2] == "PM" && hour < 11)
             {
                 hour += 12;
             }
-            if (partsTime[6] == "AM" && hour == 11)
+            if (partsTime[2] == "AM" && hour == 11)
             {
                 hour = 0;
             }

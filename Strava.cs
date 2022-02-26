@@ -16,6 +16,7 @@ namespace UploadingStravaActivities
         private WaitHelper wait;
         private WebDriverWait webWait;
         private double minumKM = 15;
+        private string downloadPath = $@"C:\Users\erykh\Downloads\";
 
         public Strava(IWebDriver _driver)
         {
@@ -28,7 +29,7 @@ namespace UploadingStravaActivities
         {
             driver.Navigate().GoToUrl("https://www.strava.com/athletes/" + athleteNumber);
 
-            IReadOnlyList <IWebElement> listOfYears = driver.FindElements(By.XPath("//*[@id='interval-date-range']//li"));
+            IReadOnlyList<IWebElement> listOfYears = driver.FindElements(By.XPath("//*[@id='interval-date-range']//li"));
             IReadOnlyList<IWebElement> listOfWeeks;
             string firstYear = driver.FindElement(By.XPath("//*[@id='interval-date-range']")).Text;
 
@@ -60,7 +61,7 @@ namespace UploadingStravaActivities
                         {
                             webWait.Until(d => driver.FindElement(By.Id("interval-value")).Text == week);
                         }
-                        catch (TimeoutException)
+                        catch (WebDriverTimeoutException)
                         {
                             listOfWeeks = driver.FindElements(By.XPath("//div[@id='interval-graph-columns']//a"));
                             listOfWeeks[listOfWeeks.Count - numberOfWeeks - 1].Click();
@@ -87,7 +88,7 @@ namespace UploadingStravaActivities
                                 string movingTime = driver.FindElement(By.XPath("//*[@id='heading']/div/div/div[2]/ul[1]/li[2]/strong")).Text;
 
                                 Thread.Sleep(1000);
-                                string newPath = SavingFiles.Save(fileName, fileDate, fileTime);
+                                string newPath = SavingFiles.Save(downloadPath, fileName, fileDate, fileTime);
                                 TxtEdit.Update(newPath, fileDate, fileTime, movingTime);
                                 //GpxEdit.Update(newPath, fileDate, fileTime, movingTime);
 
@@ -129,9 +130,9 @@ namespace UploadingStravaActivities
             }
         }
 
-        public void DownloadActivitiesNewTab(string Url)
+        public void DownloadActivitiesNewTab(string athleteNumber)
         {
-            driver.Navigate().GoToUrl(Url);
+            driver.Navigate().GoToUrl("https://www.strava.com/athletes/" + athleteNumber);
             ((IJavaScriptExecutor)driver).ExecuteScript("window.open();");
             driver.SwitchTo().Window(driver.WindowHandles.First());
 
@@ -148,15 +149,15 @@ namespace UploadingStravaActivities
                     listOfYears = driver.FindElements(By.XPath("//*[@id='interval-date-range']//li"));
                     driver.FindElement(By.XPath("//*[@id='interval-date-range']")).Click();
                     listOfYears[numberOfYears].Click();
+                    Thread.Sleep(1500);
                 }
-                Thread.Sleep(1000);
 
                 int numberOfWeeks = 0;
                 do
                 {
                     listOfWeeks = driver.FindElements(By.XPath("//div[@id='interval-graph-columns']//a"));
                     listOfWeeks[listOfWeeks.Count - numberOfWeeks - 1].Click();
-                    Thread.Sleep(1000);
+                    Thread.Sleep(1500);
 
                     IReadOnlyList<IWebElement> activities = driver.FindElements(By.XPath("//*[@id='interval-rides']/div/div"));
                     int numberOfActivities = 0;
@@ -186,8 +187,9 @@ namespace UploadingStravaActivities
 
                                 driver.SwitchTo().Window(driver.WindowHandles.First());
 
-                                string newPath = SavingFiles.Save(fileName, fileDate, fileTime);
+                                string newPath = SavingFiles.Save(downloadPath, fileName, fileDate, fileTime);
                                 TxtEdit.Update(newPath, fileDate, fileTime, movingTime);
+                                //GpxEdit.Update(newPath, fileDate, fileTime, movingTime);
                             }
                         }
                         numberOfActivities++;
