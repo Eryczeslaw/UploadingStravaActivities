@@ -59,9 +59,9 @@ namespace UploadingStravaActivities
                     {
                         try
                         {
-                            webWait.Until(d => driver.FindElement(By.Id("interval-value")).Text == week);
+                            wait.WaitUntilElementLoad("//*[@id='interval-value']", week, 5);
                         }
-                        catch (WebDriverTimeoutException)
+                        catch (TimeoutException)
                         {
                             listOfWeeks = driver.FindElements(By.XPath("//div[@id='interval-graph-columns']//a"));
                             listOfWeeks[listOfWeeks.Count - numberOfWeeks - 1].Click();
@@ -112,8 +112,7 @@ namespace UploadingStravaActivities
 
             foreach (string file in files)
             {
-                driver.FindElement(By.XPath("//*[@id='container-nav']/ul[2]/li[4]/a")).Click();
-                driver.FindElement(By.XPath("//*[@id='from-file-js']/a")).Click();
+                driver.Navigate().GoToUrl("https://www.strava.com/upload/select");
                 driver.FindElement(By.XPath("//*[@id='uploadFile']/form/input[3]")).SendKeys(file);
 
                 bool IsError = wait.WaitUntilOneOfThemLoad("//*[@id='uploadProgress']/ul/li[@class='error']", "//*[@id='uploadProgress']/ul/li[@class='finished']", 15);
@@ -122,11 +121,14 @@ namespace UploadingStravaActivities
                     string activityTitle = DataEdit.Title(file);
                     driver.FindElement(By.XPath("//*[@id='uploadProgress']//*[@name = 'name']")).Clear();
                     driver.FindElement(By.XPath("//*[@id='uploadProgress']//*[@name = 'name']")).SendKeys(activityTitle);
-                    driver.FindElement(By.XPath("//*[@id='uploadProgress']//*[@class='selection']")).Click();
-                    driver.FindElement(By.XPath("//*[@id='uploadProgress']//*[@data-value = 'Ride']")).Click();
+                    IWebElement activityType = driver.FindElement(By.XPath("//*[@id='uploadProgress']//*[@class='selection']"));
+                    if (activityType.Text != "Ride")
+                    {
+                        activityType.Click();
+                        driver.FindElement(By.XPath("//*[@id='uploadProgress']//*[@data-value = 'Ride']")).Click();
+                    }
                     driver.FindElement(By.XPath("//*[@id='uploadFooter']/button[1]")).Click();
                     wait.WaitUntilElementLoad("//*//*[@id='heading']", 15);
-                    wait.WaitUntilElementDisappear("//*[@class='lightbox edit_activity']", 15);
                 }
             }
         }
