@@ -31,6 +31,7 @@ namespace UploadingStravaActivities
 
             throw new TimeoutException();
         }
+
         public void WaitUntilElementLoad(string xPath, string text, int seconds)
         {
             for (int i = 0; i < seconds * 50; i++)
@@ -60,6 +61,26 @@ namespace UploadingStravaActivities
                 try
                 {
                     driver.FindElement(By.XPath(xPath));
+                    return;
+                }
+                catch (NoSuchElementException)
+                {
+
+                }
+
+                Thread.Sleep(20);
+            }
+
+            throw new TimeoutException();
+        }
+
+        public void WaitUntilElementClicked(string xPath, int seconds)
+        {
+            for (int i = 0; i < seconds * 50; i++)
+            {
+                try
+                {
+                    driver.FindElement(By.XPath(xPath)).Click();
                     return;
                 }
                 catch (NoSuchElementException)

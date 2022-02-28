@@ -30,7 +30,7 @@ namespace UploadingStravaActivities
             //AthletePage athlete = new AthletePage(driver, "85532528");
             //athlete.Navigate();
             Strava strava = new Strava(driver);
-            strava.DownloadActivities("22887934");
+            strava.DownloadActivitiesNewTab("22887934");
         }
 
         [Test]
@@ -41,15 +41,6 @@ namespace UploadingStravaActivities
 
             UploadPage uploadPage = new UploadPage(driver);
             uploadPage.Upload(downloadPath);
-        }
-
-        [Test]
-        public void Test3()
-        {
-            LoginPage loginPage = new LoginPage(driver);
-            loginPage.Login(email, password);
-            Strava strava = new Strava(driver);
-            strava.DownloadActivitiesNewTab("85532528");
         }
 
         [TearDown]

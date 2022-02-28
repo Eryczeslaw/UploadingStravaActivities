@@ -6,14 +6,14 @@ namespace UploadingStravaActivities.FilesModification
 {
     public class DownloadFiles
     {
-        public static string Download(string directoryDownloadPath, string name, string date, string time, int downloadTimeSeconds)
+        public static string Download(string directoryDownloadPath, string name, string date, string time, int downloadSecondsTime)
         {
-            string path = ChangeName(directoryDownloadPath, name, date, time, downloadTimeSeconds);
+            string path = ChangeName(directoryDownloadPath, name, date, time, downloadSecondsTime);
 
             return path;
         }
 
-        private static string ChangeName(string directoryDownloadPath, string name, string date, string time, int downloadTimeSeconds)
+        private static string ChangeName(string directoryDownloadPath, string name, string date, string time, int downloadSecondsTime)
         {
             string wantedName = CorrectName(name);
             string wantedFilePath = directoryDownloadPath + "\\" + wantedName + ".gpx";
@@ -24,7 +24,7 @@ namespace UploadingStravaActivities.FilesModification
             string newName = DoNewName(date, time);
             string newFilePath = directoryDownloadPath + "\\" + newName + ".gpx";
 
-            for (int i = 0; i < downloadTimeSeconds * 1; i++)
+            for (int i = 0; i < downloadSecondsTime * 4; i++)
             {
                 if (File.Exists(wantedFilePath))
                 {
@@ -59,6 +59,8 @@ namespace UploadingStravaActivities.FilesModification
             name = name.Replace('ż', '_');
             name = name.Replace(',', '_');
             name = name.Replace('.', '_');
+            name = name.Replace('/', '_');
+            name = name.Replace('\\', '_');
             name = name.Replace('!', '_');
             name = name.Replace('?', '_');
             name = name.Replace(':', '_');
@@ -66,7 +68,11 @@ namespace UploadingStravaActivities.FilesModification
             name = name.Replace(')', '_');
             name = name.Replace('(', '_');
             name = name.Replace('#', '_');
+            name = name.Replace('^', '_');
+            name = name.Replace('&', '_');
             name = name.Replace('-', '_');
+            name = name.Replace('+', '_');
+            name = name.Replace("😎", "_");
             name = name.Replace("___", "_");
             name = name.Replace("__", "_");
             name = name.Replace("__", "_");
