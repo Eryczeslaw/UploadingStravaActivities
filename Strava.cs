@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using UploadingStravaActivities.FilesModification;
@@ -83,9 +84,17 @@ namespace UploadingStravaActivities
                                 string movingTime = driver.FindElement(By.XPath("//*[@id='heading']/div/div/div[2]/ul[1]/li[2]/strong")).Text;
 
                                 Thread.Sleep(1000);
-                                string newPath = SavingFiles.Save(downloadPath, fileName, fileDate, fileTime);
-                                TxtEdit.Update(newPath, fileDate, fileTime, movingTime);
-                                //GpxEdit.Update(newPath, fileDate, fileTime, movingTime);
+
+                                try
+                                {
+                                    string newPath = DownloadFiles.Download(downloadPath, fileName, fileDate, fileTime, 10);
+                                    //TxtEdit.Update(newPath, fileDate, fileTime, movingTime);
+                                    GpxEdit.Update(newPath, fileDate, fileTime, movingTime);
+                                }
+                                catch (FileNotFoundException)
+                                {
+
+                                }
 
                                 driver.Navigate().Back();
                             }
@@ -157,9 +166,16 @@ namespace UploadingStravaActivities
 
                                 driver.SwitchTo().Window(driver.WindowHandles.First());
 
-                                string newPath = SavingFiles.Save(downloadPath, fileName, fileDate, fileTime);
-                                TxtEdit.Update(newPath, fileDate, fileTime, movingTime);
-                                //GpxEdit.Update(newPath, fileDate, fileTime, movingTime);
+                                try
+                                {
+                                    string newPath = DownloadFiles.Download(downloadPath, fileName, fileDate, fileTime, 10);
+                                    //TxtEdit.Update(newPath, fileDate, fileTime, movingTime);
+                                    GpxEdit.Update(newPath, fileDate, fileTime, movingTime);
+                                }
+                                catch (FileNotFoundException)
+                                {
+
+                                }
                             }
                         }
                         numberOfActivities++;

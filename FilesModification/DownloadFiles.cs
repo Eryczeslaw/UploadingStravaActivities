@@ -1,32 +1,48 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 
 namespace UploadingStravaActivities.FilesModification
 {
-    public class SavingFiles
+    public class DownloadFiles
     {
-        public static string Save(string directoryDownloadPath, string name, string date, string time)
+        public static string Download(string directoryDownloadPath, string name, string date, string time, int downloadTimeSeconds)
         {
-            string path = ChangeName(directoryDownloadPath, name, date, time);
+            string path = ChangeName(directoryDownloadPath, name, date, time, downloadTimeSeconds);
 
             return path;
         }
 
-        private static string ChangeName(string directoryDownloadPath, string name, string date, string time)
+        private static string ChangeName(string directoryDownloadPath, string name, string date, string time, int downloadTimeSeconds)
         {
-            name = CorrectName(name);
+            string wantedName = CorrectName(name);
+            string wantedFilePath = directoryDownloadPath + "\\" + wantedName + ".gpx";
+
+            string invisibleSpaceName = wantedName + "_";
+            string invisibleSpaceFilePath = directoryDownloadPath + "\\" + invisibleSpaceName + ".gpx";
 
             string newName = DoNewName(date, time);
-            string filePath = directoryDownloadPath + "\\" + name;
-            string fileNewPath = directoryDownloadPath + "\\" + newName;
+            string newFilePath = directoryDownloadPath + "\\" + newName + ".gpx";
 
-            if (File.Exists(filePath))
+            for (int i = 0; i < downloadTimeSeconds * 1; i++)
             {
-                File.Copy(filePath, fileNewPath, true);
-                File.Delete(filePath);
+                if (File.Exists(wantedFilePath))
+                {
+                    File.Copy(wantedFilePath, newFilePath, true);
+                    File.Delete(wantedFilePath);
+                    return newFilePath;
+                }
+                else if (File.Exists(invisibleSpaceFilePath))
+                {
+                    File.Copy(invisibleSpaceFilePath, newFilePath, true);
+                    File.Delete(invisibleSpaceFilePath);
+                    return newFilePath;
+                }
+
+                Thread.Sleep(250);
             }
 
-            return fileNewPath;
+            throw new FileNotFoundException();
         }
 
         private static string CorrectName(string name)
@@ -55,7 +71,6 @@ namespace UploadingStravaActivities.FilesModification
             name = name.Replace("__", "_");
             name = name.Replace("__", "_");
 
-            name += ".gpx";
             return name;
         }
 
@@ -65,14 +80,14 @@ namespace UploadingStravaActivities.FilesModification
             string[] tempDate;
 
             tempDate = date.Split(',');
-            time = DoNewTime(time.Substring(time.Length - 8).Trim());
+            time = ConvertTime(time.Substring(time.Length - 8).Trim());
 
-            tempName = $"{tempDate[2].Trim()}-{tempDate[1].Trim()}-{time.Trim()}.gpx";
+            tempName = $"{tempDate[2].Trim()}-{tempDate[1].Trim()}-{time.Trim()}";
 
             return tempName;
         }
 
-        private static string DoNewTime(string time)
+        private static string ConvertTime(string time)
         {
             string newTime;
             string[] partsTime = time.Split(' ', ':');
