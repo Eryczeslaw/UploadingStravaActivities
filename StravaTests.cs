@@ -27,10 +27,8 @@ namespace UploadingStravaActivities
         {
             LoginPage loginPage = new LoginPage(driver);
             loginPage.Login(email, password);
-            //AthletePage athlete = new AthletePage(driver, "85532528");
-            //athlete.Navigate();
-            Strava strava = new Strava(driver);
-            strava.DownloadActivitiesNewTab("22887934");
+            AthletePage athlete = new AthletePage(driver, "85532528");
+            athlete.Navigate();
         }
 
         [Test]

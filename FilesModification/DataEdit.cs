@@ -10,9 +10,9 @@ namespace UploadingStravaActivities.FilesModification
             string[] partsTime = time.Substring(time.Length - 8).Trim().Split(' ', ':');
 
 
-            int year = Convert.ToInt32(partsDate[3]);
+            int year = Convert.ToInt32(partsDate[partsDate.Length - 1]);
             int month = ConvertMonth(partsDate);
-            int day = Convert.ToInt32(partsDate[2]);
+            int day = Convert.ToInt32(partsDate[partsDate.Length - 2]);
             int hour = Convert.ToInt32(partsTime[0]) - 1;
             int minute = Convert.ToInt32(partsTime[1]);
 
@@ -33,7 +33,7 @@ namespace UploadingStravaActivities.FilesModification
         private static int ConvertMonth(string[] date)
         {
             int month = 0;
-            switch (date[1])
+            switch (date[date.Length - 3])
             {
                 case "January":
                     {
