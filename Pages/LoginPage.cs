@@ -19,7 +19,6 @@ namespace UploadingStravaActivities.Pages
 
         private IWebDriver driver;
 
-
         public LoginPage(IWebDriver _driver)
         {
             driver = _driver;

@@ -17,8 +17,8 @@ namespace UploadingStravaActivities.FilesModification
             name = CorrectName(name);
 
             string newName = DoNewName(date, time);
-            string filePath = directoryDownloadPath + name;
-            string fileNewPath = directoryDownloadPath + newName;
+            string filePath = directoryDownloadPath + "\\" + name;
+            string fileNewPath = directoryDownloadPath + "\\" + newName;
 
             if (File.Exists(filePath))
             {

@@ -7,9 +7,10 @@ namespace UploadingStravaActivities.Pages
         private IWebDriver driver;
         private string athleteNumber;
 
-        public AthletePage(IWebDriver _driver, string athleteNumber)
+        public AthletePage(IWebDriver _driver, string _athleteNumber)
         {
             driver = _driver;
+            athleteNumber = _athleteNumber;
         }
 
         public void Navigate()

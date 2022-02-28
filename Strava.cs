@@ -1,10 +1,7 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using UploadingStravaActivities.FilesModification;
 
@@ -14,14 +11,12 @@ namespace UploadingStravaActivities
     {
         private IWebDriver driver;
         private WaitHelper wait;
-        private WebDriverWait webWait;
         private double minumKM = 15;
-        private string downloadPath = $@"C:\Users\erykh\Downloads\";
+        private string downloadPath = $@"C:\Users\erykh\Downloads";
 
         public Strava(IWebDriver _driver)
         {
             driver = _driver;
-            webWait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
             wait = new WaitHelper(driver);
         }
 
@@ -103,34 +98,6 @@ namespace UploadingStravaActivities
 
                 numberOfYears++;
             } while (numberOfYears != listOfYears.Count);
-        }
-
-        public void UploadActivities()
-        {
-            WebClient webClient = new WebClient();
-            IEnumerable<string> files = Directory.EnumerateFiles(@"C:\Users\erykh\Downloads", "*.gpx");
-
-            foreach (string file in files)
-            {
-                driver.Navigate().GoToUrl("https://www.strava.com/upload/select");
-                driver.FindElement(By.XPath("//*[@id='uploadFile']/form/input[3]")).SendKeys(file);
-
-                bool IsError = wait.WaitUntilOneOfThemLoad("//*[@id='uploadProgress']/ul/li[@class='error']", "//*[@id='uploadProgress']/ul/li[@class='finished']", 15);
-                if (!IsError)
-                {
-                    string activityTitle = DataEdit.Title(file);
-                    driver.FindElement(By.XPath("//*[@id='uploadProgress']//*[@name = 'name']")).Clear();
-                    driver.FindElement(By.XPath("//*[@id='uploadProgress']//*[@name = 'name']")).SendKeys(activityTitle);
-                    IWebElement activityType = driver.FindElement(By.XPath("//*[@id='uploadProgress']//*[@class='selection']"));
-                    if (activityType.Text != "Ride")
-                    {
-                        activityType.Click();
-                        driver.FindElement(By.XPath("//*[@id='uploadProgress']//*[@data-value = 'Ride']")).Click();
-                    }
-                    driver.FindElement(By.XPath("//*[@id='uploadFooter']/button[1]")).Click();
-                    wait.WaitUntilElementLoad("//*//*[@id='heading']", 15);
-                }
-            }
         }
 
         public void DownloadActivitiesNewTab(string athleteNumber)

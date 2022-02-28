@@ -8,8 +8,9 @@ namespace UploadingStravaActivities
     public class StravaTests
     {
         private IWebDriver driver;
-        private readonly string email = "fejk@buziaczek.pl";
-        private readonly string password = "!Fejk123";
+        private readonly string email = "*****";
+        private readonly string password = "*****";
+        private readonly string downloadPath = $@"C:\Users\erykh\Downloads";
 
         [SetUp]
         public void Setup()
@@ -38,8 +39,8 @@ namespace UploadingStravaActivities
             LoginPage loginPage = new LoginPage(driver);
             loginPage.Login(email, password);
 
-            Strava strava = new Strava(driver);
-            strava.UploadActivities();
+            UploadPage uploadPage = new UploadPage(driver);
+            uploadPage.Upload(downloadPath);
         }
 
         [Test]
