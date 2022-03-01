@@ -6,14 +6,14 @@ namespace UploadingStravaActivities.FilesModification
 {
     public class DownloadFiles
     {
-        public static string Download(string directoryDownloadPath, string name, string date, string time, int downloadSecondsTime)
+        public static string Download(string directoryDownloadPath, string name, string date, string time)
         {
-            string path = ChangeName(directoryDownloadPath, name, date, time, downloadSecondsTime);
+            string path = ChangeName(directoryDownloadPath, name, date, time);
 
             return path;
         }
 
-        private static string ChangeName(string directoryDownloadPath, string name, string date, string time, int downloadSecondsTime)
+        private static string ChangeName(string directoryDownloadPath, string name, string date, string time)
         {
             string wantedName = CorrectName(name);
             string wantedFilePath = directoryDownloadPath + "\\" + wantedName + ".gpx";
@@ -24,7 +24,7 @@ namespace UploadingStravaActivities.FilesModification
             string newName = DoNewName(date, time);
             string newFilePath = directoryDownloadPath + "\\" + newName + ".gpx";
 
-            for (int i = 0; i < downloadSecondsTime * 4; i++)
+            for (int i = 0; i < StravaTests.secondsToDownload * 4; i++)
             {
                 if (File.Exists(wantedFilePath))
                 {
@@ -73,6 +73,8 @@ namespace UploadingStravaActivities.FilesModification
             name = name.Replace('-', '_');
             name = name.Replace('+', '_');
             name = name.Replace("😎", "_");
+            name = name.Replace("🏭", "_");
+            name = name.Replace("🏘️", "_");
             name = name.Replace("___", "_");
             name = name.Replace("__", "_");
             name = name.Replace("__", "_");

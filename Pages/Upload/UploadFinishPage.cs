@@ -1,15 +1,10 @@
 ﻿using OpenQA.Selenium;
-using SeleniumExtras.PageObjects;
 using System.Threading;
 
-namespace UploadingStravaActivities.Pages
+namespace UploadingStravaActivities.Pages.Upload
 {
     class UploadFinishPage
     {
-        [FindsBy(How = How.Id, Using = "heading")]
-        [CacheLookup]
-        private IWebElement ActivityHeading { get; set; }
-
         private IWebDriver driver;
 
         public UploadFinishPage(IWebDriver _driver)
@@ -19,17 +14,13 @@ namespace UploadingStravaActivities.Pages
 
         public void Wait(int seconds)
         {
-            PageFactory.InitElements(driver, this);
-
             for (int i = 0; i < seconds * 50; i++)
             {
-                PageFactory.InitElements(driver, this);
                 try
                 {
-                    if (ActivityHeading.Displayed)
-                    {
-                        return;
-                    }
+                    driver.FindElement(By.Id("heading"));
+                    return;
+
                 }
                 catch (NoSuchElementException)
                 {

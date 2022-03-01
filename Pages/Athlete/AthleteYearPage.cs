@@ -1,22 +1,18 @@
 ﻿using OpenQA.Selenium;
-using SeleniumExtras.PageObjects;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace UploadingStravaActivities.Pages
+namespace UploadingStravaActivities.Pages.Athlete
 {
     class AthleteYearPage
     {
-        [FindsBy(How = How.XPath, Using = "//div[@id='interval-graph-columns']//a")]
-        [CacheLookup]
-        private IList<IWebElement> ListOfWeeks { get; set; }
-
+        private IList<IWebElement> listOfWeeks;
         private IWebDriver driver;
 
         public AthleteYearPage(IWebDriver _driver)
         {
             driver = _driver;
-            PageFactory.InitElements(driver, this);
+            listOfWeeks = driver.FindElements(By.XPath("//div[@id='interval-graph-columns']//a"));
         }
 
         public void Navigate()
@@ -24,16 +20,16 @@ namespace UploadingStravaActivities.Pages
             int numberOfWeeks = 0;
             do
             {
-                if (ListOfWeeks.Count > 0)
+                if (listOfWeeks.Count > 0)
                 {
-                    ListOfWeeks[ListOfWeeks.Count - numberOfWeeks - 1].Click();
+                    listOfWeeks[listOfWeeks.Count - numberOfWeeks - 1].Click();
                     Thread.Sleep(1500);
 
                     AthleteWeekPage athleteWeek = new AthleteWeekPage(driver);
                     athleteWeek.Navigate();
                 }
                 numberOfWeeks++;
-            } while (numberOfWeeks < ListOfWeeks.Count);
+            } while (numberOfWeeks < listOfWeeks.Count);
         }
     }
 }

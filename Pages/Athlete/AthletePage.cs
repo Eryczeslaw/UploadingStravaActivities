@@ -1,17 +1,13 @@
 ﻿using OpenQA.Selenium;
-using SeleniumExtras.PageObjects;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace UploadingStravaActivities.Pages
+namespace UploadingStravaActivities.Pages.Athlete
 {
     class AthletePage
     {
-        [FindsBy(How = How.XPath, Using = "//*[@id='interval-date-range']//li")]
-        [CacheLookup]
-        private IList<IWebElement> ListOfYears { get; set; }
-
+        private IList<IWebElement> listOfYears;
         private IWebDriver driver;
 
         public AthletePage(IWebDriver _driver, string _athleteNumber)
@@ -22,7 +18,7 @@ namespace UploadingStravaActivities.Pages
             driver.SwitchTo().Window(driver.WindowHandles.First());
             driver.Navigate().GoToUrl("https://www.strava.com/athletes/" + _athleteNumber);
 
-            PageFactory.InitElements(driver, this);
+            listOfYears = driver.FindElements(By.XPath("//*[@id='interval-date-range']//li"));
         }
 
         public void Navigate()
@@ -32,9 +28,8 @@ namespace UploadingStravaActivities.Pages
             {
                 if (numberOfYears > -1)
                 {
-                    PageFactory.InitElements(driver, this);
                     driver.FindElement(By.XPath("//*[@id='interval-date-range']")).Click();
-                    ListOfYears[numberOfYears].Click();
+                    listOfYears[numberOfYears].Click();
                     Thread.Sleep(1500);
                 }
 
@@ -42,7 +37,7 @@ namespace UploadingStravaActivities.Pages
                 athleteYear.Navigate();
 
                 numberOfYears++;
-            } while (numberOfYears != ListOfYears.Count);
+            } while (numberOfYears != listOfYears.Count);
         }
     }
 }

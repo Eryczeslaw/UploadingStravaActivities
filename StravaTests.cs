@@ -1,7 +1,12 @@
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using UploadingStravaActivities.Pages;
+using UploadingStravaActivities.Pages.Athlete;
+using UploadingStravaActivities.Pages.Upload;
 
 namespace UploadingStravaActivities
 {
@@ -10,7 +15,10 @@ namespace UploadingStravaActivities
         private IWebDriver driver;
         private readonly string email = "*****";
         private readonly string password = "*****";
-        private readonly string downloadPath = $@"C:\Users\erykh\Downloads";
+        public static string downloadPath = $@"C:\Users\erykh\Downloads";
+        public static int secondsToDownload = 20;
+        public static int secondsToUpload = 30;
+        public static double minumKM = 15;
 
         [SetUp]
         public void Setup()
@@ -25,8 +33,11 @@ namespace UploadingStravaActivities
         [Test]
         public void Test1()
         {
+            driver.Navigate().GoToUrl("http://strava.com/login");
+
             LoginPage loginPage = new LoginPage(driver);
             loginPage.Login(email, password);
+
             AthletePage athlete = new AthletePage(driver, "85532528");
             athlete.Navigate();
         }
@@ -34,11 +45,25 @@ namespace UploadingStravaActivities
         [Test]
         public void Test2()
         {
+            driver.Navigate().GoToUrl("http://strava.com/login");
+
             LoginPage loginPage = new LoginPage(driver);
             loginPage.Login(email, password);
 
-            UploadPage uploadPage = new UploadPage(driver);
-            uploadPage.Upload(downloadPath);
+            IEnumerable<string> files = Directory.EnumerateFiles(downloadPath, "*.gpx");
+            foreach (string file in files)
+            {
+                driver.Navigate().GoToUrl("https://www.strava.com/upload/select");
+                UploadPage uploadPage = new UploadPage(driver);
+                try
+                {
+                    uploadPage.Upload(file);
+                }
+                catch (TimeoutException)
+                {
+
+                }
+            }
         }
 
         [TearDown]
