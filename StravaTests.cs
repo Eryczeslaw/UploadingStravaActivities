@@ -23,11 +23,13 @@ namespace UploadingStravaActivities
         [SetUp]
         public void Setup()
         {
-            driver = new ChromeDriver();
-            driver.Manage().Window.Position = new System.Drawing.Point(30, 30);
-            driver.Manage().Window.Size = new System.Drawing.Size(1800, 1000);
-
-            driver.Manage().Timeouts().PageLoad = System.TimeSpan.FromSeconds(15);
+            ChromeOptions chromeOptions = new ChromeOptions();
+            chromeOptions.AddUserProfilePreference("download.default_directory", downloadPath);
+            chromeOptions.AddUserProfilePreference("download.prompt_for_download", false);
+            chromeOptions.AddArgument("start-maximized");
+            
+            driver = new ChromeDriver(chromeOptions);
+            driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(15);
         }
 
         [Test]
